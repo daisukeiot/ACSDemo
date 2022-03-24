@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Pixsee2 Azure Communication Service Demo</title>
+
+</head>
+
+<body>
+    <h1>
+        <div id="PageType"></div>
+    </h1>
+    <h2>
+        <div id="PageDescriptionDevice" hidden="true">
+            This page simulates Camera Device
+        </div>
+        <div id="PageDescriptionCloud" hidden="true">
+            This page simulates Camera Device
+        </div>
+    </h2>
+    <table class="myTable">
+        <tr>
+            <td style="font-weight: bold">Token Expire</td>
+            <td style="min-width: 40em;"><span id="token-expire">-</span></td>
+            <td>
+                <button class="full-button" id="RefreshToken-button" type="button" disabled="true">
+                    Refresh
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">ACS ID</td>
+            <td><span id="identity">-</span></td>
+            <td>
+                <button class="full-button" id="CopyAcsId-button" type="button" disabled="false">
+                    Copy
+                </button>
+            </td>
+        </tr>
+        <tr id="incomingCallRow">
+            <td style="font-weight: bold">Incoming Call</td>
+            <td><span style="font-weight: bold" id="incoming-call-status"></span></td>
+            <td>
+                <div style="padding-right:0.3em">
+                    <input type="checkbox" id="autoacceptcall" checked="true">Auto Accept
+                    <button class="half-button" id="answer-button" type="button" disabled="true">
+                        Accept
+                    </button>
+                    <button class="half-button" id="reject-button" type="button" disabled="true" style="float:right">
+                        Reject
+                    </button>
+                </div>
+            </td>
+        </tr>
+        <tr id="destinationRow">
+            <td style="font-weight: bold">Destination</td>
+            <td colspan="2">
+                <div style="padding:0 0.3em 0 0">
+                    <input id="destination-user-id" type="text" placeholder="ACS User ID to call"
+                        style="width:100%; height:1.5em;" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Status</td>
+            <td colspan="2"><span style="font-weight: bold" id="call-state">-</span></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div style="padding:0.5em 0 0.5em 0">
+                    <button class="full-button" id="test-connect-button" type="button" disabled="true">
+                        Test Connection
+                    </button>
+                    <button class="full-button" id="connect-button" type="button" disabled="false">
+                        Connect
+                    </button>
+                    <button class="full-button" id="disconnect-button" type="button" disabled="true">
+                        Disconnect
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:50vw">
+        <tr>
+            <th id="localVideoHeader" hidden="true">Local Video</th>
+            <th id="remoteVideoHeader" hidden="true">Remote Video</th>
+        </tr>
+        <tr>
+            <td id="localVideoWindow" hidden="true">
+                <div id="localVideo" style="width: 100%;min-width:24vw"></div>
+            </td>
+            <td id="remoteVideoWindow" hidden="true">
+                <div id="remoteVideo" style="width: 100%;min-width:24vw"></div>
+            </td>
+        </tr>
+    </table>
+
+    <script src="./bundle.js"></script>
+</body>
+
+</html>

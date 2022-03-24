@@ -1,0 +1,1 @@
+npx webpack-dev-server --entry ./main.js --output bundle.js --debug --devtool inline-source-map
