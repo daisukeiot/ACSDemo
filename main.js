@@ -7,6 +7,7 @@ AzureLogger.log = (...args) => {
     console.log(...args);
 };
 
+const restUrl = '';
 const refreshTokenButton = document.getElementById('RefreshToken-button');
 const copyIdButton = document.getElementById('CopyAcsId-button');
 const testConnectButton = document.getElementById('test-connect-button');
@@ -61,7 +62,12 @@ async function init() {
         }
         // Call Azure Functions to get ID and Token.
         const callClient = new CallClient();
-        const response = await fetch('Add Functions URL', {
+
+        if (restUrl.length == 0)
+        {
+            window.alert("Configure REST API URL in main.js")
+        }
+        const response = await fetch(restUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'applicaiton/json'
