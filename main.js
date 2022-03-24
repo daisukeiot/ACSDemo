@@ -61,7 +61,7 @@ async function init() {
         }
         // Call Azure Functions to get ID and Token.
         const callClient = new CallClient();
-        const response = await fetch('https://pixseefunction.azurewebsites.net/api/GetToken', {
+        const response = await fetch('Add Functions URL', {
             method: 'GET',
             headers: {
                 'Content-Type': 'applicaiton/json'
