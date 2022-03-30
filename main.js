@@ -7,7 +7,7 @@ AzureLogger.log = (...args) => {
     console.log(...args);
 };
 
-const restUrl = 'https://acsdemo-functions.azurewebsites.net';
+const restUrl = '';
 const refreshTokenButton = document.getElementById('RefreshToken-button');
 const copyIdButton = document.getElementById('CopyAcsId-button');
 const testConnectButton = document.getElementById('test-connect-button');
