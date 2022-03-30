@@ -167,6 +167,8 @@ async function refreshToken() {
     token = responseContent.token;
     tokenExpireLabel.innerText = responseContent.expiresOn;
 
+    return token;
+
 }
 
 async function acceptCall() {
