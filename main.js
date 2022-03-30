@@ -7,7 +7,7 @@ AzureLogger.log = (...args) => {
     console.log(...args);
 };
 
-const restUrl = '';
+const restUrl = 'https://acsdemo-functions.azurewebsites.net';
 const refreshTokenButton = document.getElementById('RefreshToken-button');
 const copyIdButton = document.getElementById('CopyAcsId-button');
 const testConnectButton = document.getElementById('test-connect-button');
@@ -22,6 +22,8 @@ const tokenExpireLabel = document.getElementById('token-expire');
 const identityElement = document.getElementById('identity');
 const destinationUserId = document.getElementById('destination-user-id');
 
+let token
+let acsId;
 let call;
 let deviceManager;
 let callAgent;
@@ -34,6 +36,7 @@ async function init() {
 
     try {
 
+        acsId = "";
         var args = new Object;
         url = location.search.substring(1).split('&');
 
@@ -67,7 +70,10 @@ async function init() {
         {
             window.alert("Configure REST API URL in main.js")
         }
-        const response = await fetch(restUrl, {
+
+        getTokenUrl = restUrl + "/api/GetToken"
+
+        const response = await fetch(getTokenUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'applicaiton/json'
@@ -76,12 +82,17 @@ async function init() {
 
         const responseJson = await response.json();
         const responseContent = JSON.parse(responseJson.content);
-        const token = responseContent.token;
-        const tokenCredential = new AzureCommunicationTokenCredential(token);
+        token = responseContent.token;
+        const tokenCredential = new AzureCommunicationTokenCredential({
+            tokenRefresher: refreshToken(),
+            refreshProactively: true,
+            token: token
+        });
         callAgent = await callClient.createCallAgent(tokenCredential);
 
         // Fill out UI nad enable buttons
-        identityElement.innerText = responseContent.userId;
+        acsId = responseContent.userId;
+        identityElement.innerText = acsId;
         copyIdButton.disabled = false;
         tokenExpireLabel.innerText = responseContent.expiresOn;
         refreshTokenButton.disabled = false;
@@ -122,6 +133,41 @@ async function init() {
 }
 
 init();
+
+async function refreshToken() {
+
+    if (acsId == "")
+    {
+        return;
+    }
+
+    console.log("Refresh Token " + acsId);
+
+    const requestBody = JSON.stringify({
+        id: acsId
+    });
+
+    refreshTokenUrl = restUrl + "/api/RefreshToken";
+
+    const response = await fetch(refreshTokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: requestBody
+    });
+
+    if (!response.ok) {
+        console.log(`Error at issue token with status ${response.status}`);
+        return;
+    }
+
+    const responseJson = await response.json();
+    const responseContent = JSON.parse(responseJson.content);
+    token = responseContent.token;
+    tokenExpireLabel.innerText = responseContent.expiresOn;
+
+}
 
 async function acceptCall() {
     try {
@@ -208,9 +254,9 @@ copyIdButton.onclick = function () {
     navigator.clipboard.writeText(identityElement.innerText);
 }
 
-refreshTokenButton.onclick = function () {
-    console.log("Not Implemented Yet");
-}
+refreshTokenButton.onclick = async () => {
+    await refreshToken();
+};
 
 testConnectButton.onclick = async () => {
 
